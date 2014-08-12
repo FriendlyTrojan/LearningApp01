@@ -1,7 +1,71 @@
-@(message: String)
+@(people: List[Person], personForm: Form[Person])
 
-@main("Welcome to Play") {
+@import helper._
 
-    @play20.welcome(message, style = "Java")
+@main("People list") {
 
+<!--<h1>@people.size() person(s)</h1>-->
+<table class="table">
+    <tr>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>Birth date</th>
+        <th>Favourite DB</th>
+        <th>Notes</th>
+        <th>Delete</th>
+    </tr>
+    @for(person <- people) {
+    <tr>
+        <td>@person.getFirstName()</td>
+        <td>@person.getLastName()</td>
+        <td>@person.getEmail()</td>
+        <td>@person.getBirthDate()</td>
+        <td>@person.getFavouriteDb().getName()</td>
+        <td>@person.getNotes()</td>
+        <td>@form(routes.Application.deletePerson(person.getPersonId())) {
+        <input type="submit" value="Delete">
+        }</td>
+    </tr>
+    }
+</table>
+
+<!--<h2>Add a new person</h2>-->
+
+@form(routes.Application.newPerson()) {
+
+@if(personForm.hasErrors) {
+<div class="alert alert-error">
+    @if(personForm.errors.size() > 0) {
+    @for((key, value) <- personForm.errors) {
+    @for(err <- value) {
+    <p>@key.toString() &rarr; @err.message()</p>
+    }
+    }
+    } else {No error returned.}
+</div>
+}
+
+<fieldset>
+    <legend>User (@personForm("FirstName").valueOr("New"))</legend>
+    @inputText(personForm("FirstName"))
+    @inputText(personForm("LastName"))
+    @inputText(personForm("Email"))
+    @inputDate(personForm("BirthDate"), '_showConstraints -> false)
+    @select(personForm("FavouriteDb.FavouriteDbId"),
+    FavouriteDb.all().map{ f =>f.getFavouriteDbId().toString -> (f.getName())},'_default -> "--Select database--")
+    @textarea(personForm("Notes"), args = 'rows -> 4, 'cols -> 75)
+</fieldset>
+@for((key, errors) <- personForm.errors){
+    <b>@key:</b><br/>
+    @for(err <- errors){
+                @err.message()<br/>
+    }
+}
+
+<br />
+<input type="submit" value="Create">
+<input type="reset" value="Reset">
+
+}
 }

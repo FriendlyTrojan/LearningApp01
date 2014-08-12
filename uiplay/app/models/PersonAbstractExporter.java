@@ -36,7 +36,7 @@ public abstract class PersonAbstractExporter implements Person.Exporter {
         this.notes = notes;
     }
 
-    public void addID(String id) {
+    public void addPersonID(String id) {
         this.id = id;
     }
 }
