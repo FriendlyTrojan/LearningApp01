@@ -5,7 +5,6 @@ import play.db.jpa.JPA;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by karolt on 2014-08-12.
@@ -20,13 +19,13 @@ public class FavouriteDb implements Serializable {
 
     private String name;
 
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="FAVOURITEDB_ID")
-    private Set<Person> people;
+    public FavouriteDb(){}
+
+    public FavouriteDb(String name){this.name = name;}
 
     public static List<FavouriteDb> all() {
         return JPA.em().createQuery(
-                "SELECT f FROM FavouriteDb f").getResultList();
+                "SELECT f FROM FavouriteDb f", FavouriteDb.class).getResultList();
 
     }
 
@@ -44,14 +43,6 @@ public class FavouriteDb implements Serializable {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public Set<Person> getPeople() {
-        return people;
-    }
-
-    public void setPeople(Set<Person> people) {
-        this.people = people;
     }
 }
 
