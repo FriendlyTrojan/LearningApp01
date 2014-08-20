@@ -1,4 +1,4 @@
-@(people: List[PersonEntity], personForm: Form[PersonEntity])
+@(people: List[PersonEntity], allDb: List[FavouriteDbEntity], personForm: Form[PersonEntity])
 
 @import helper._
 
@@ -20,7 +20,7 @@
         <td>@person.getLastName()</td>
         <td>@person.getEmail()</td>
         <td>@person.getBirthDate()</td>
-        <td>@person.getFavouriteDb().getName()</td>
+        <td>@person.getFavouriteDb().getDbName()</td>
         <td>@person.getNotes()</td>
         <td>@form(routes.Application.deletePerson(person.getPersonId())) {
         <input type="submit" value="Delete">
@@ -52,7 +52,7 @@
     @inputText(personForm("Email"))
     @inputDate(personForm("BirthDate"), '_showConstraints -> false)
     @select(personForm("FavouriteDb.FavouriteDbId"),
-    FavouriteDb.all().map{ f =>f.getFavouriteDbId().toString -> (f.getName())},'_default -> "--Select database--")
+    allDb.map{ f =>f.getFavouriteDbId().toString -> (f.getDbName())},'_default -> "--Select database--")
     @textarea(personForm("Notes"), args = 'rows -> 4, 'cols -> 75)
 </fieldset>
 @for((key, errors) <- personForm.errors){

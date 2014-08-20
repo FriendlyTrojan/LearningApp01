@@ -34,6 +34,7 @@ public class Application extends Controller {
     }
 
     private static PersonService personService;
+    private static FavouriteDbService favouriteDbService;
 
     private static PersonService getPersonService() {
         if(personService == null) {
@@ -44,18 +45,27 @@ public class Application extends Controller {
         return personService;
     }
 
+    private static FavouriteDbService getFavouriteDbService(){
+        if(favouriteDbService == null){
+            ApplicationContext appContext = new ClassPathXmlApplicationContext("classpath:daoDi.xml");
+            favouriteDbService = (FavouriteDbService) appContext.getBean("favouriteDbService");
+        }
+
+        return favouriteDbService;
+    }
+
     @Transactional
     public static Result people() {
         /*
         // Data entries for setup
-        JPA.em().persist((new FavouriteDb("PostgreSQL")));
-        JPA.em().persist((new FavouriteDb("MySql")));
-        JPA.em().persist((new FavouriteDb("Oracle")));
-        JPA.em().persist((new FavouriteDb("MsSql")));
+        JPA.em().persist((new FavouriteDbEntity("PostgreSQL")));
+        JPA.em().persist((new FavouriteDbEntity("MySql")));
+        JPA.em().persist((new FavouriteDbEntity("Oracle")));
+        JPA.em().persist((new FavouriteDbEntity("MsSql")));
         */
 
         return ok(
-                views.html.index.render(getPersonService().findAll(), personForm)
+                views.html.index.render(getPersonService().findAll(), getFavouriteDbService().findAll(), personForm)
         );
     }
 
@@ -79,7 +89,7 @@ public class Application extends Controller {
         Form<PersonEntity> filledForm = personForm.bindFromRequest();
         if(filledForm.hasErrors()) {
             return badRequest(
-                    views.html.index.render(getPersonService().findAll(), filledForm)
+                    views.html.index.render(getPersonService().findAll(), getFavouriteDbService().findAll(), filledForm)
             );
         } else {
             getPersonService().save(filledForm.get());

@@ -7,4 +7,9 @@
     <bean id="personService" class="models.PersonService">
         <constructor-arg ref="personStandardDao" />
     </bean>
+
+    <bean id="favouriteDbStandardDao" class="models.FavouriteDbDaoJpa"/>
+    <bean id="favouriteDbService" class="models.FavouriteDbService">
+        <constructor-arg ref="favouriteDbStandardDao" />
+    </bean>
 </beans>

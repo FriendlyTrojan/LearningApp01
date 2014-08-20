@@ -1,5 +1,6 @@
 package models;
 
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import play.data.format.Formats;
 import play.data.validation.Constraints;
@@ -41,7 +42,7 @@ public class PersonEntity implements Serializable {
     private String email;
 
     @ManyToOne
-    private FavouriteDb favouriteDb;
+    private FavouriteDbEntity favouriteDb;
 
     @Column(length=5000, columnDefinition= "varchar(5000)")
     @Constraints.MaxLength(message = "Field should not exceed 5000 characters" ,value = 5000)
@@ -88,11 +89,11 @@ public class PersonEntity implements Serializable {
         this.email = email;
     }
 
-    public FavouriteDb getFavouriteDb() {
+    public FavouriteDbEntity getFavouriteDb() {
         return favouriteDb;
     }
 
-    public void setFavouriteDb(FavouriteDb favouriteDb) {
+    public void setFavouriteDb(FavouriteDbEntity favouriteDb) {
         this.favouriteDb = favouriteDb;
     }
 
