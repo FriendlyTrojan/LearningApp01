@@ -10,17 +10,13 @@ import play.data.validation.Constraints;
 
 import play.mvc.*;
 
-import scala.Console;
-import scala.Console$;
 import views.html.*;
 
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 import java.util.Locale;
 
-import javax.persistence.*;
 import play.db.jpa.*;
 import play.data.*;
 import models.*;
@@ -56,14 +52,6 @@ public class Application extends Controller {
 
     @Transactional
     public static Result people() {
-        /*
-        // Data entries for setup
-        JPA.em().persist((new FavouriteDbEntity("PostgreSQL")));
-        JPA.em().persist((new FavouriteDbEntity("MySql")));
-        JPA.em().persist((new FavouriteDbEntity("Oracle")));
-        JPA.em().persist((new FavouriteDbEntity("MsSql")));
-        */
-
         return ok(
                 views.html.index.render(getPersonService().findAll(), getFavouriteDbService().findAll(), personForm)
         );
